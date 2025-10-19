@@ -22,6 +22,8 @@ export const PingButton: FC = () => {
 		}
 
 		try {
+
+			console.log("Wallet Address : ", publicKey.toBase58());
 			const programId = new PublicKey(PROGRAM_ID);
 			const programDataAccount = new PublicKey(DATA_ACCOUNT_PUBKEY);
 			const transaction = new Transaction();
@@ -39,15 +41,12 @@ export const PingButton: FC = () => {
 
 			transaction.add(instruction);
 
+			console.log("Awaiting User Confirmation");
+
 			const signature = await sendTransaction(transaction, connection);
 			console.log(`Transaction Signature : ${signature}`);
-
-			const latestBlockhash = await connection.getLatestBlockhash();
-			await connection.confirmTransaction({
-				signature,
-				...latestBlockhash,
-			});
 			
+			console.log("Transaction Successful.");
 		}
 
 		catch (error) {
